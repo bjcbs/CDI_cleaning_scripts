@@ -90,7 +90,6 @@ def append_year_to_different_column(curr_file_name, new_file_name, y_col, q_col,
         for part in parts:
             new_line += part
             new_line += ","
-        new_line += "\n" 
 
         new_file.write(new_line)
 
