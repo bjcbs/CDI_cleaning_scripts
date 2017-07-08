@@ -75,6 +75,7 @@ def append_year_to_different_column(curr_file_name, new_file_name, y_col, q_col,
         y_col - int, which column contains the year (starting from 0)
         q_col - int, the column to which the year should be added
         header - bool, if there is a header line
+    returns: None
     """
 
     old_file = open(curr_file_name, "r")
@@ -97,6 +98,42 @@ def append_year_to_different_column(curr_file_name, new_file_name, y_col, q_col,
     old_file.close()
     new_file.close()
 
+def filter_csv(current_file_name, new_file_name, col, accepted, header = True, case_sensitive = True): 
+    """ 
+    Copies contents from csv file current_file_name to new_file_new, copying a 
+    line if and only if the value in column number col is in the list accepted
+
+    parameters:
+        current_file_name - string, name of a csv file
+        new_file_name - string, csv file to write to
+        col - int, which column to filter on (starts at 0)
+        accepted - list of strings, the accepted terms
+        header - bool, True if the file has a header line
+        case_sensitive - bool, True if the matching is to be case sensitive
+
+    returns: None
+    """
+    old_file = open(current_file_name, "r")
+    new_file = open(new_file_name, "w")
+
+    if header:
+        new_file.write(old_file.readline())
+
+    if case_sensitive:
+        for line in old_file.readlines():
+            parts = line.split(",")
+            if parts[col] in accepted:
+                new_file.write(line)
+    else:
+        accepted = [s.lower() for s in accepted()]
+        for line in old_file.readlines():
+            parts = line.split(",")
+            if parts[col].lower in accepted:
+                new_file.write(line)
+
+    old_file.close()
+    new_file.close()
+
 def main():
     try:
         fname = sys.argv[1]
@@ -106,13 +143,16 @@ def main():
         print "Use: python <remove_old_surveys.py> <existing_filename> <new_filename>"
         return 1
 
-    temp_name = "temp.csv" 
+    temp_name1 = "temp.1csv" 
+    temp_name2 = "temp2.csv"
 
     current_years = most_recent_years(fname, 1, 6)
     
-    clean_file(fname, temp_name , current_years, 1, 6) 
+    clean_file(fname, temp_name1, current_years, 1, 6) 
 
-    append_year_to_different_column(temp_name, newname, 1, 6) 
+    append_year_to_different_column(temp_name1, temp_name2, 1, 6) 
+    
+    filter_csv(temp_name2, newname, 17, ["Overall"], case_sensitive = False) 
 
     os.remove(temp_name)
    
