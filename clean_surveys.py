@@ -125,7 +125,7 @@ def filter_csv(current_file_name, new_file_name, col, accepted, header = True, c
             if parts[col] in accepted:
                 new_file.write(line)
     else:
-        accepted = [s.lower() for s in accepted()]
+        accepted = [s.lower() for s in accepted]
         for line in old_file.readlines():
             parts = line.split(",")
             if parts[col].lower in accepted:
@@ -154,7 +154,8 @@ def main():
     
     filter_csv(temp_name2, newname, 17, ["Overall"], case_sensitive = False) 
 
-    os.remove(temp_name)
+    os.remove(temp_name1)
+    os.remove(temp_name2)
    
 
 if __name__ == "__main__":
