@@ -128,7 +128,7 @@ def filter_csv(current_file_name, new_file_name, col, accepted, header = True, c
         accepted = [s.lower() for s in accepted]
         for line in old_file.readlines():
             parts = line.split(",")
-            if parts[col].lower in accepted:
+            if parts[col].lower() in accepted:
                 new_file.write(line)
 
     old_file.close()
